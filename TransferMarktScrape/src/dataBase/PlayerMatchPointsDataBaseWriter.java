@@ -20,7 +20,7 @@ public class PlayerMatchPointsDataBaseWriter {
 	public void dataBaseWriter(List<Player> playerList) {
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerscores"));
+			setConnection(DataBaseConnection.getConnection());
 
 			//Clear current Table
 			String sqlClearTable = "DELETE FROM puntenperwedstrijd";
@@ -30,12 +30,12 @@ public class PlayerMatchPointsDataBaseWriter {
 			//Fill table with players
 			for (Player player : playerList) {
 				for (PersonalGame game : player.getPersonalGameList()) {
-					String mySQLString = "insert into puntenperwedstrijd(naam,wedstrijdnaam,punten)values(?,?,?)";
+					String mySQLString = "insert into (naam,wedstrijdnaam,punten)values(?,?,?)";
 					ps = con.prepareStatement(mySQLString);
 					ps.setString(1, player.getPlayerName());
 					ps.setString(2, game.getMatchName());
 					ps.setInt(3, game.getPoints());
-					ps.executeUpdate();
+//					ps.executeUpdate();
 				}
 			}
 

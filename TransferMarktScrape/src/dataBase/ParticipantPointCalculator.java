@@ -20,11 +20,7 @@ public class ParticipantPointCalculator {
 	public void pointCalculator(List<Participant> participantList) {
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerscores"));
-
-			String sqlClearTable = "DELETE FROM deelnemerdatabase";
-			PreparedStatement ps = con.prepareStatement(sqlClearTable);
-			ps.executeUpdate();
+			setConnection(DataBaseConnection.getConnection());
 
 			for (Participant participant : participantList) {
 				double participantScoreGroup = 0;
@@ -47,25 +43,24 @@ public class ParticipantPointCalculator {
 				participantScoreGroup += squadGroup.getLb().getGroupPoints();
 
 				//Calculate KO score for each participant
-				participantScoreKO += squadKO.getDm().getKoPoints();
-				participantScoreKO += squadKO.getRa().getKoPoints();
-				participantScoreKO += squadKO.getRcv().getKoPoints();
-				participantScoreKO += squadKO.getLcv().getKoPoints();
-				participantScoreKO += squadKO.getLa().getKoPoints();
-				participantScoreKO += squadKO.getRm().getKoPoints();
-				participantScoreKO += squadKO.getCm().getKoPoints();
-				participantScoreKO += squadKO.getLm().getKoPoints();
-				participantScoreKO += squadKO.getRb().getKoPoints();
-				participantScoreKO += squadKO.getSp().getKoPoints();
-				participantScoreKO += squadKO.getLb().getKoPoints();
+//				participantScoreKO += squadKO.getDm().getKoPoints();
+//				participantScoreKO += squadKO.getRa().getKoPoints();
+//				participantScoreKO += squadKO.getRcv().getKoPoints();
+//				participantScoreKO += squadKO.getLcv().getKoPoints();
+//				participantScoreKO += squadKO.getLa().getKoPoints();
+//				participantScoreKO += squadKO.getRm().getKoPoints();
+//				participantScoreKO += squadKO.getCm().getKoPoints();
+//				participantScoreKO += squadKO.getLm().getKoPoints();
+//				participantScoreKO += squadKO.getRb().getKoPoints();
+//				participantScoreKO += squadKO.getSp().getKoPoints();
+//				participantScoreKO += squadKO.getLb().getKoPoints();
 
 				participantScoreTotal = participantScoreGroup + participantScoreKO;
 
 				//Write the score to the database
-				String mySQLString = "insert into deelnemerdatabase(deelnemernaam, deelnemerpunten)values(?,?)";
-				ps = con.prepareStatement(mySQLString);
-				ps.setString(1, participant.getParticipantName());
-				ps.setDouble(2, participantScoreTotal);
+				String mySQLString = "update deelnemerdatabase set deelnemerpunten_gf =" + "'"+ participantScoreGroup +"'"+  ", deelnemerpunten_ko = "+"'" +participantScoreKO +"'"+
+						"WHERE deelnemeremail = '" + participant.getParticipantName()+ "'";
+				PreparedStatement ps = con.prepareStatement(mySQLString);
 				ps.executeUpdate();
 
 			}

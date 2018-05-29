@@ -22,7 +22,7 @@ public class Engine {
 
 		PlayerValueCalculator playerValueCalculator = new PlayerValueCalculator();
 		playerValueCalculator.calculatePlayerValue(playerList);
-
+		
 		PlayerDataBaseWriter dbWriterPlayer = new PlayerDataBaseWriter();
 		dbWriterPlayer.dataBaseWriter(playerList);
 

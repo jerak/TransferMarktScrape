@@ -1,7 +1,5 @@
 package dataBase;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import com.mysql.jdbc.Connection;
 
@@ -31,13 +29,14 @@ public class CountryWriter {
 			//Fill table with players
 
 			for (Country country : countryList) {
+				System.out.println(country.getCountryName() + " " + country.getCountryValue());
 				String mySQLString = "insert into landengegevens(landnaam, vlag)values(?,?)";
 				ps = con.prepareStatement(mySQLString);
-				File file = new File(country.getFlagPath());
-				FileInputStream fis = new FileInputStream(file);
+//				File file = new File(country.getFlagPath());
+//				FileInputStream fis = new FileInputStream(file);
 
 				ps.setString(1, country.getCountryName());
-				ps.setBinaryStream(2, fis);
+				ps.setInt(2, 0);
 				ps.executeUpdate();
 			}
 		} catch (Exception e) {

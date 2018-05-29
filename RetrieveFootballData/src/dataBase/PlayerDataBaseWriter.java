@@ -1,7 +1,5 @@
 package dataBase;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.util.List;
 
@@ -32,21 +30,19 @@ public class PlayerDataBaseWriter {
 			//Fill table with players
 
 			for (Player player : playerList) {
-				String mySQLString = "insert into spelers(naam,land,club,positie,waarde,spelerfoto,clublogo, spelerURL)values(?,?,?,?,?,?,?,?)";
+				String mySQLString = "insert into spelers(naam,land,club,positie,waarde,url)values(?,?,?,?,?,?)";
 				ps = con.prepareStatement(mySQLString);
-				File faceFile = new File(player.getFaceImagePath());
-				FileInputStream fis = new FileInputStream(faceFile);
-				File logoFile = new File(player.getLogoImagePath());
-				FileInputStream fisLogo = new FileInputStream(logoFile);
-				
+				//				File faceFile = new File(player.getFaceImagePath());
+				//				FileInputStream fis = new FileInputStream(faceFile);
+				//				File logoFile = new File(player.getLogoImagePath());
+				//				FileInputStream fisLogo = new FileInputStream(logoFile);
+
 				ps.setString(1, player.getPlayerName());
 				ps.setString(2, player.getCountry().getCountryName());
 				ps.setString(3, player.getClubName());
-				ps.setString(4, player.getPosition());
+				ps.setString(4, getDutchPositionName(player.getPosition()));
 				ps.setInt(5, player.getPlayerValue());
-				ps.setBinaryStream(6, fis);
-				ps.setBinaryStream(7, fisLogo);
-				ps.setString(8, player.getPlayerURL());
+				ps.setString(6, player.getPlayerURL());
 				ps.executeUpdate();
 			}
 		} catch (Exception e) {
@@ -55,4 +51,24 @@ public class PlayerDataBaseWriter {
 		}
 	}
 
+	public String getDutchPositionName(String positionName){
+		String positionString = null;
+		if (positionName.equals("Striker")) {
+			positionString = "Aanvaller";
+		}
+		else if (positionName.equals("Midfield")) {
+			positionString = "Middenvelder";
+		}
+		else if (positionName.equals("Defence")) {
+			positionString = "Verdediger";
+		}
+		else if (positionName.equals("Goalkeeper")) {
+			positionString = "Keeper";
+		}
+		else {
+			return positionName;
+		}
+		return positionString;
+	}
 }
+

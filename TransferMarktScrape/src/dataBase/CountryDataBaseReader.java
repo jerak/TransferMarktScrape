@@ -21,8 +21,8 @@ public class CountryDataBaseReader {
 		List<Country> countryList = new ArrayList<>();
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerdatabase"));
-
+			setConnection(DataBaseConnection.getConnection());
+			
 			Statement m_Statement = con.createStatement();
 			String mySQLString = "select * from landengegevens";
 			ResultSet m_ResultSet = m_Statement.executeQuery(mySQLString);

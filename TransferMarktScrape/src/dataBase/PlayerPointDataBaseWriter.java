@@ -18,7 +18,7 @@ public class PlayerPointDataBaseWriter {
 	public void dataBaseWriter(List<Player> playerList) {
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerscores"));
+			setConnection(DataBaseConnection.getConnection());
 
 			//Clear current Table
 			String sqlClearTable = "DELETE FROM spelerpuntentotaal";
@@ -28,10 +28,13 @@ public class PlayerPointDataBaseWriter {
 			//Fill table with players
 
 			for (Player player : playerList) {
-				String mySQLString = "insert into spelerpuntentotaal(naam, punten)values(?,?)";
+				String mySQLString = "insert into spelerpuntentotaal(naam, club, puntengf, puntenko, puntentotaal)values(?,?,?,?,?)";
 				ps = con.prepareStatement(mySQLString);
 				ps.setString(1, player.getPlayerName());
-				ps.setInt(2, player.getTotalPoints());
+				ps.setString(2, player.getClubName());
+				ps.setInt(3, player.getGroupPoints());
+				ps.setInt(4, player.getKoPoints());
+				ps.setInt(5, player.getTotalPoints());
 				ps.executeUpdate();
 			}
 

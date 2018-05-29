@@ -19,6 +19,9 @@ public class PlayerValueCalculator {
 			playerValueWebsite = player.getPlayerValueWebsite();
 			countryValueWebsite = player.getCountry().getCountryValue();
 			playerAge = player.getAge();
+			if (player.getPlayerName().equals("Lionel Messi")) {
+				System.out.println("HERE");
+			}
 
 			//Scale the playerValue of the website
 			int playerValueWebsiteScaled = (int) (playerValueWebsite/PlayerValueParameters.scalePlayerValue);
@@ -43,10 +46,16 @@ public class PlayerValueCalculator {
 			}
 
 			playerValue = (int) (ageFactor * playerValueWebsiteScaled * PlayerValueParameters.multiplierWebSiteValue 
-					+ PlayerValueParameters.multiplierCountryValue * countryValueWebsiteScaled) +
-					PlayerValueParameters.minimumPlayerValue; 
+					+ PlayerValueParameters.multiplierCountryValue * countryValueWebsiteScaled);
+			playerValue = (int) ((int) playerValue / 3);
 			int playerValueRounded = (int) playerValue /250000;
 			playerValueRounded = playerValueRounded * 250000;
+			if (playerAge <= 22) {
+				playerValueRounded = (int) (playerValueRounded - PlayerValueParameters.age22andYounger);
+			}
+			playerValueRounded = Math.max(playerValueRounded, PlayerValueParameters.minimumPlayerValue);
+			playerValueRounded = Math.min(playerValueRounded, PlayerValueParameters.maxPlayerValue);
+			
 
 			player.setPlayerValue(playerValueRounded);
 		}

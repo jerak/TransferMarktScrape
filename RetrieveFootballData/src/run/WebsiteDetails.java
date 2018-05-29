@@ -2,7 +2,6 @@ package run;
 
 public class WebsiteDetails {
 
-	public static final int speelDagen = 7;
 	public final static boolean scrapeImage = true;
 
 	//WK-2010
@@ -11,9 +10,9 @@ public class WebsiteDetails {
 	//	public final static String addURL = "?saison_id=2009";
 
 	//WK-2014
-		public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2014/teilnehmer/pokalwettbewerb/WM14/saison_id2013";
-		public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2014/spieltag/pokalwettbewerb/WM14/plus/0?spieltag=";
-		public final static String addURL = "?saison_id=2013";
+//		public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2014/teilnehmer/pokalwettbewerb/WM14/saison_id2013";
+//		public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2014/spieltag/pokalwettbewerb/WM14/plus/0?spieltag=";
+//		public final static String addURL = "?saison_id=2013";
 
 	//WK voor Club-Teams
 	//public final static String playerHtml = "https://www.transfermarkt.com/fifa-klub-wm/teilnehmer/pokalwettbewerb/KLUB/saison_id/2017";
@@ -27,9 +26,9 @@ public class WebsiteDetails {
 	//public final static String errorURLmatch = "https://www.transfermarkt.com/spielbericht/index/spielbericht/2702906";
 
 	//WK 2018
-	//public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2018/startseite/pokalwettbewerb/WM18";
-	//public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2014/spieltag/pokalwettbewerb/WM14/plus/0?spieltag=";
-	//public final static String addURL = "";
+	public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2018/startseite/pokalwettbewerb/WM18";
+	public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2014/spieltag/pokalwettbewerb/WM14/plus/0?spieltag=";
+	public final static String addURL = "";
 
 
 }

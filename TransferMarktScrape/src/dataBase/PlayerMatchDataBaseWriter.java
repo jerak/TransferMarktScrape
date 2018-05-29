@@ -20,7 +20,7 @@ public class PlayerMatchDataBaseWriter {
 	public void dataBaseWriter(List<Player> playerList) {
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerscores"));	
+			setConnection(DataBaseConnection.getConnection());	
 
 
 			//Clear current Table
@@ -41,7 +41,7 @@ public class PlayerMatchDataBaseWriter {
 				for (int i = gameList.size(); i <= WebsiteDetails.speelDagen-1; i++) {
 					ps.setString(2+i, null);
 				}
-				ps.executeUpdate();
+//				ps.executeUpdate();
 			}
 
 

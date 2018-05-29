@@ -3,7 +3,7 @@ package game;
 public class PointParameters {
 
 	//RoundMultipliers
-	public static final double[] RoundMultiplier = {1,1,1,1.125,1.25,1.375,1.5};
+	public static final double[] RoundMultiplier = {1,1,1,1.125,1.25,1.375,1.5,2};
 	
 	//Starting Squad & Substitutes	
 	public static final int StartingSquad = 10;
@@ -36,8 +36,8 @@ public class PointParameters {
 	
 	//Cards
 	public static final int YellowCards = -24;
-	public static final int DoubleYellow = -12;
-	public static final int RedCard = -48;
+	public static final int DoubleYellow = -24;
+	public static final int RedCard = -64;
 	
 	//Regular Penalties
 	public static final int RegularPenaltyHit = 64;

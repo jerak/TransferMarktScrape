@@ -7,9 +7,9 @@ import com.mysql.jdbc.Connection;
 
 public class DataBaseConnection {
 
-	public static final String dataBaseUserName = "root";
-	public static final String dataBasePassWord = "";
-	public static final String url = "jdbc:mysql://localhost:3306/playerdatabase";
+	public static final String dataBaseUserName = "u307836_f303625";
+	public static final String dataBasePassWord = "bartboersma24";
+	public static final String url = "jdbc:mysql://91.184.19.128:3306/db307836_managerwkvoetbal";
 
 	static Connection con;
 	

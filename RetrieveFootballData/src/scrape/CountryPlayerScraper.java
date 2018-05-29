@@ -16,7 +16,6 @@ import org.jsoup.select.Elements;
 
 import attributes.Country;
 import attributes.Player;
-import game.PlayerValueParameters;
 import run.WebsiteDetails;
 
 
@@ -27,7 +26,7 @@ public class CountryPlayerScraper {
 
 
 	public List<Country> scrapeTeamList() throws IOException {
-		
+
 		Document doc = Jsoup.connect(WebsiteDetails.playerHtml).get();
 
 		Elements doubleTable = doc.select("div[class=large-8 columns]");
@@ -140,16 +139,18 @@ public class CountryPlayerScraper {
 				}
 
 				//Scrape the Logo of the club of the Player
-				String logoUrl = imageContainerContainer.attr("src");
-				String destinationFilePathLogo = "Club Logo/" + clubName.trim() + ".png";
+				String logoUrl = null;
+				if (WebsiteDetails.scrapeImage) {
+					logoUrl = imageContainerContainer.attr("src");
+					String destinationFilePathLogo = "Club Logo/" + clubName.trim() + ".png";
 
-				//logoUrl = logoUrl.replaceAll("verysmall", "medium");
-				
-				if (WebsiteDetails.scrapeImage && !logoUrl.isEmpty()) {
-					saveImage(logoUrl, destinationFilePathLogo);
+					//logoUrl = logoUrl.replaceAll("verysmall", "medium");
+
+					if (WebsiteDetails.scrapeImage && !logoUrl.isEmpty()) {
+						saveImage(logoUrl, destinationFilePathLogo);
+					}
+					player.setLogoImagePath(destinationFilePath);
 				}
-				player.setLogoImagePath(destinationFilePath);
-
 
 				//Set the age of the player
 				Elements ageContainer = playerRow.select("td[class=zentriert]");
@@ -160,8 +161,8 @@ public class CountryPlayerScraper {
 				String valueElement = playerRow.select("td[class=rechts hauptlink]").text();
 				if(valueElement.contains("Mill.")) {
 					String convertedString = valueElement.replaceAll("[^\\d,]", "");
-					double convertedDouble = Math.min(PlayerValueParameters.maxPlayerValue,
-							Double.parseDouble(convertedString.replace(",","."))*1000000);
+					double convertedDouble = 
+							Double.parseDouble(convertedString.replace(",","."))*1000000;
 					int playerValueWebsite = (int) convertedDouble;	
 					player.setPlayerValueWebsite(playerValueWebsite);
 				}
@@ -183,7 +184,7 @@ public class CountryPlayerScraper {
 				country.getPlayerList().add(player);
 			}
 		}
-			return playerList;
+		return playerList;
 	}
 
 	public boolean checkDuplicatePlayers() {
@@ -191,8 +192,8 @@ public class CountryPlayerScraper {
 		for (Player player1 : playerList) {
 			for (Player player2 : playerList) {
 				if(player1 != player2 && player1.getPlayerName().equals(player2.getPlayerName()) && player1.getCountry().getCountryName().equals(player2.getCountry().getCountryName())) {
-					System.out.println(player1.getPlayerName() + " " +player1.getCountry().getCountryName());
-					System.out.println(player2.getPlayerName() + " " +player2.getCountry().getCountryName());
+					System.out.println(player1.getPlayerName() + " " +player1.getCountry().getCountryName() + player1.getClubName());
+					System.out.println(player2.getPlayerName() + " " +player2.getCountry().getCountryName() + player2.getClubName());
 					duplicates = true;
 				}
 			}

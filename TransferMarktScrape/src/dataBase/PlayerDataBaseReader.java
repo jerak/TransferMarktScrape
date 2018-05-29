@@ -22,7 +22,7 @@ public class PlayerDataBaseReader {
 		List<Player> playerList = new ArrayList<>();
 
 		try {
-			setConnection(DataBaseConnection.establishConnection("jdbc:mysql://localhost:3306/playerdatabase"));
+			setConnection(DataBaseConnection.getConnection());
 
 			Statement m_Statement = con.createStatement();
 			String mySQLString = "select * from spelers";
@@ -33,12 +33,14 @@ public class PlayerDataBaseReader {
 			while (m_ResultSet.next()) {
 				String playerName = m_ResultSet.getString("naam");
 				player = new Player(playerName);
+				String club = m_ResultSet.getString("club");
+				player.setClubName(club);
 				country = findCountryByName(m_ResultSet.getString("land"), countryList);
 				player.setCountry(country);
 				country.getPlayerList().add(player);
 				String positie = m_ResultSet.getString("positie");
 				player.setPosition(positie);
-				String playerURL = m_ResultSet.getString("spelerURL");
+				String playerURL = m_ResultSet.getString("url");
 				player.setPlayerURL(playerURL);
 				playerList.add(player);
 			}
