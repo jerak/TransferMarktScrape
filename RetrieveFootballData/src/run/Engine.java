@@ -19,7 +19,7 @@ public class Engine {
 		playerScraper.scrapeTeamStats();
 		List<Player> playerList = playerScraper.scrapePlayerList();
 		playerScraper.checkDuplicatePlayers();
-
+		
 		PlayerValueCalculator playerValueCalculator = new PlayerValueCalculator();
 		playerValueCalculator.calculatePlayerValue(playerList);
 		

@@ -19,8 +19,8 @@ public class Engine {
 		PlayerDataBaseReader playerDataBaseReader = new PlayerDataBaseReader();
 		List<Player> playerList = playerDataBaseReader.dataBaseReader(countryList);
 
-		PlayerValueCalculator playerValueCalculator = new PlayerValueCalculator();
-		playerValueCalculator.calculatePlayerValue(playerList);
+//		PlayerValueCalculator playerValueCalculator = new PlayerValueCalculator();
+//		playerValueCalculator.calculatePlayerValue(playerList);
 
 		MatchScraper matchscraper = new MatchScraper();
 		List<Match> matchList = matchscraper.scraperMatches(countryList);
@@ -40,6 +40,10 @@ public class Engine {
 		//		PlayerMatchPointsDataBaseWriter dbWriterMatchPoints = new PlayerMatchPointsDataBaseWriter();
 		//		dbWriterMatchPoints.dataBaseWriter(playerList);
 
+		for (Player player : playerList) {
+			System.out.println(player.getPlayerName() + " " + player.getGroupPoints() + " " + player.getKoPoints());
+		}
+		
 		System.out.println("Reading Squads");
 		SquadReader squadReader = new SquadReader();
 		List<Participant> participantList = squadReader.squadReadGroup(playerList);

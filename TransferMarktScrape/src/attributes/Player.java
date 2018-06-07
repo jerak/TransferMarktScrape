@@ -28,6 +28,8 @@ public class Player {
 		matchList = new ArrayList<>();
 		personalGameList = new ArrayList<>();
 		totalPoints = 0;
+		groupPoints = 0;
+		koPoints = 0;
 	}
 	
 	public int getPlayerValueWebsite() {

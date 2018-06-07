@@ -3,7 +3,7 @@ package game;
 public class PointParameters {
 
 	//RoundMultipliers
-	public static final double[] RoundMultiplier = {1,1,1,1.125,1.25,1.375,1.5,2};
+	public static final double[] RoundMultiplier = {1,1,1,1.125,1.25,1.5,1.75,2};
 	
 	//Starting Squad & Substitutes	
 	public static final int StartingSquad = 10;

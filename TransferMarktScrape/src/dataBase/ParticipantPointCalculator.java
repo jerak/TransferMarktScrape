@@ -43,17 +43,17 @@ public class ParticipantPointCalculator {
 				participantScoreGroup += squadGroup.getLb().getGroupPoints();
 
 				//Calculate KO score for each participant
-//				participantScoreKO += squadKO.getDm().getKoPoints();
-//				participantScoreKO += squadKO.getRa().getKoPoints();
-//				participantScoreKO += squadKO.getRcv().getKoPoints();
-//				participantScoreKO += squadKO.getLcv().getKoPoints();
-//				participantScoreKO += squadKO.getLa().getKoPoints();
-//				participantScoreKO += squadKO.getRm().getKoPoints();
-//				participantScoreKO += squadKO.getCm().getKoPoints();
-//				participantScoreKO += squadKO.getLm().getKoPoints();
-//				participantScoreKO += squadKO.getRb().getKoPoints();
-//				participantScoreKO += squadKO.getSp().getKoPoints();
-//				participantScoreKO += squadKO.getLb().getKoPoints();
+				participantScoreKO += squadKO.getDm().getKoPoints();
+				participantScoreKO += squadKO.getRa().getKoPoints();
+				participantScoreKO += squadKO.getRcv().getKoPoints();
+				participantScoreKO += squadKO.getLcv().getKoPoints();
+				participantScoreKO += squadKO.getLa().getKoPoints();
+				participantScoreKO += squadKO.getRm().getKoPoints();
+				participantScoreKO += squadKO.getCm().getKoPoints();
+				participantScoreKO += squadKO.getLm().getKoPoints();
+				participantScoreKO += squadKO.getRb().getKoPoints();
+				participantScoreKO += squadKO.getSp().getKoPoints();
+				participantScoreKO += squadKO.getLb().getKoPoints();
 
 				participantScoreTotal = participantScoreGroup + participantScoreKO;
 

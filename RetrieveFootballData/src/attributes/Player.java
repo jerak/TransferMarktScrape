@@ -163,7 +163,11 @@ public class Player {
 	}
 
 	public static String getParenthesesContent(String str){
-		return str.substring(str.indexOf('(')+1,str.indexOf(')'));
+		if (str.contains("(") && str.contains(")")){ 
+			return str.substring(str.indexOf('(')+1,str.indexOf(')'));
+		} else {
+			return str.trim();
+		}
 	}
 
 	public int getGroupPoints() {

@@ -1,0 +1,224 @@
+package scrape;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jsoup.*;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import attributes.Country;
+import attributes.Player;
+import run.WebsiteDetails;
+
+
+public class CountryPlayerScraper {
+
+	private static List<Country> countryList = new ArrayList<>();
+	private static List<Player> playerList = new ArrayList<>();
+
+
+	public List<Country> scrapeTeamList() throws IOException {
+
+		Document doc = Jsoup.connect(WebsiteDetails.playerHtml).get();
+
+		Elements doubleTable = doc.select("div[class=large-8 columns]");
+		for (Element countryRow : doubleTable.select("tr")) {
+			Elements countryNameElement = countryRow.select("td[class=links no-border-links hauptlink]");
+			String countryName = countryNameElement.text();
+			String countryHTML = countryNameElement.select("a").attr("abs:href");
+			if (!countryName.isEmpty()) {
+				Country country = new Country(countryName.trim());
+				country.setCountryHTML(countryHTML);
+				countryList.add(country);
+			}
+		}
+		return countryList;
+	}
+
+	public void scrapeTeamStats() throws IOException {
+		for (Country country : countryList) {
+			String html = country.getCountryHTML();
+			Document doc = Jsoup.connect(html).get();
+			Elements statBox = doc.select("div[class= box-personeninfos]");
+			for (Element countryStats: statBox.select("tr")) {
+				String tempString = countryStats.text();
+				if(tempString.contains("FIFA world ranking:")) {	
+					String convertedString = tempString.replaceAll("[^\\d,]", "");
+					Integer fifaRanking = Integer.parseInt(convertedString);
+					country.setFifaRanking(fifaRanking);
+				}
+				if(tempString.contains("Market value:")  && tempString.contains("Mill.")) {
+					String convertedString = tempString.replaceAll("[^\\d,]", "");
+					double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*1000000;
+					country.setCountryValue(convertedDouble);
+				}
+				else if(tempString.contains("Market value:")  && tempString.contains("Th.")) {
+					String convertedString = tempString.replaceAll("[^\\d,]", "");
+					System.out.println(convertedString);
+					double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*100000;
+					System.out.println(convertedDouble);
+					country.setCountryValue(convertedDouble);
+
+				}
+
+			}
+		}
+	}
+
+	public void scrapeCountryFlags() throws IOException {
+		for (Country country : countryList) {
+			String html = country.getCountryHTML() + WebsiteDetails.addURL;
+			Document doc = Jsoup.connect(html).get();
+			Elements imageContainer = doc.select("div[class=flagge]");
+			Elements image = imageContainer.select("img");
+			String imageUrl = image.attr("src");
+			String destinationFilePath = "Country Images/"+
+					country.getCountryName() + ".png";
+
+			if (WebsiteDetails.scrapeImage) {
+				saveImage(imageUrl, destinationFilePath);
+			}
+			country.setFlagPath(destinationFilePath);
+		}
+	}
+
+	public List<Player> scrapePlayerList() throws IOException {
+		for (Country country : countryList) {
+			String html = country.getCountryHTML() + WebsiteDetails.addURL;
+			Document doc = Jsoup.connect(html).get();
+			Elements outerTable = doc.select("div[id=yw1]");
+			Elements innerTable = outerTable.select("table[class=items]");
+			for (Element playerRow : innerTable.select("tr[class]")) {	
+
+				//Set the URL of the player
+				Elements playerRowTD = playerRow.select("td[class=hauptlink]");
+				Elements playerRowContainer = playerRowTD.select("span[class=hide-for-small]");
+				String playerURL = playerRowContainer.select("a[href]").attr("abs:href");
+				String playerName = playerRowContainer.select("a[href]").text();
+				Player player = new Player(playerName.trim());
+				player.setPlayerURL(playerURL);
+
+				//Scrape the Image of the Player
+				Elements imageContainerFace = playerRow.select("tbody");
+				Elements image = imageContainerFace.select("img");      
+
+				String imageUrl = image.attr("data-src");
+				String destinationFilePath = "Player Images/"+
+						country.getCountryName() + " " +player.getPlayerName()+".jpg";
+
+				imageUrl = imageUrl.replaceAll("small", "medium");
+				if (WebsiteDetails.scrapeImage) {
+					saveImage(imageUrl, destinationFilePath);
+
+				}
+				player.setFaceImagePath(destinationFilePath);
+
+				//Set the country of the player
+				player.setCountry(country);
+
+
+				//Set the squad number of the player
+				String squadNumber = playerRow.select("div[class=rn_nummer]").text().trim();
+				player.setSquadNumber(squadNumber);
+
+				//Set the club of the player
+				Elements imageContainer = playerRow.select("td[class=zentriert]");
+				Elements imageContainerContainer = imageContainer.select("img");
+				String clubName = imageContainerContainer.attr("alt");
+
+				if (clubName.isEmpty()) {
+					player.setClubName("None");
+				} else {
+					player.setClubName(clubName.trim()); 
+				}
+
+				//Scrape the Logo of the club of the Player
+				String logoUrl = null;
+				if (WebsiteDetails.scrapeImage) {
+					logoUrl = imageContainerContainer.attr("src");
+					String destinationFilePathLogo = "Club Logo/" + clubName.trim() + ".png";
+
+					//logoUrl = logoUrl.replaceAll("verysmall", "medium");
+
+					if (WebsiteDetails.scrapeImage && !logoUrl.isEmpty()) {
+						saveImage(logoUrl, destinationFilePathLogo);
+					}
+					player.setLogoImagePath(destinationFilePath);
+				}
+
+				//Set the age of the player
+				Elements ageContainer = playerRow.select("td[class=zentriert]");
+				String ageString = ageContainer.text();
+				player.setAge(ageString);
+
+				//Set the value of the player
+				String valueElement = playerRow.select("td[class=rechts hauptlink]").text();
+				if(valueElement.contains("Mill.")) {
+					String convertedString = valueElement.replaceAll("[^\\d,]", "");
+					double convertedDouble = 
+							Double.parseDouble(convertedString.replace(",","."))*1000000;
+					int playerValueWebsite = (int) convertedDouble;	
+					player.setPlayerValueWebsite(playerValueWebsite);
+				}
+				else if(valueElement.contains("Th.")) {
+					String convertedString = "0,"+ valueElement.replaceAll("[^\\d,]", "");
+					double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*100000;
+					int playerValueWebsite = (int) convertedDouble;
+					player.setPlayerValueWebsite(playerValueWebsite);
+
+				}	
+				else if(valueElement.isEmpty()) {
+					player.setPlayerValueWebsite(0);
+				}
+
+				//Set the position of the player
+				String position = playerRow.select("td").attr("title");
+				player.setPosition(position);
+				playerList.add(player);
+				country.getPlayerList().add(player);
+			}
+		}
+		return playerList;
+	}
+
+	public boolean checkDuplicatePlayers() {
+		Boolean duplicates = false;
+		for (Player player1 : playerList) {
+			for (Player player2 : playerList) {
+				if(player1 != player2 && player1.getPlayerName().equals(player2.getPlayerName()) && player1.getCountry().getCountryName().equals(player2.getCountry().getCountryName())) {
+					System.out.println(player1.getPlayerName() + " " +player1.getCountry().getCountryName() + player1.getClubName());
+					System.out.println(player2.getPlayerName() + " " +player2.getCountry().getCountryName() + player2.getClubName());
+					duplicates = true;
+				}
+			}
+		}
+		return duplicates;
+	}
+
+	public static void saveImage(String imageUrl, String destinationFile) throws IOException {
+		URL url = new URL(imageUrl);
+		InputStream is = url.openStream();
+		File file = new File(destinationFile);
+		OutputStream os = new FileOutputStream(file);
+
+		byte[] b = new byte[2048];
+		int length;
+
+		while ((length = is.read(b)) != -1) {
+			os.write(b, 0, length);
+		}
+
+		is.close();
+		os.close();
+	}
+
+
+}

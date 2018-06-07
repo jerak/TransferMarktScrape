@@ -47,26 +47,34 @@ public class CountryPlayerScraper {
 		for (Country country : countryList) {
 			String html = country.getCountryHTML();
 			Document doc = Jsoup.connect(html).get();
-			Elements statBox = doc.select("div[class= box-personeninfos]");
-			for (Element countryStats: statBox.select("tr")) {
-				String tempString = countryStats.text();
-				if(tempString.contains("FIFA world ranking:")) {	
-					String convertedString = tempString.replaceAll("[^\\d,]", "");
-					Integer fifaRanking = Integer.parseInt(convertedString);
-					country.setFifaRanking(fifaRanking);
-				}
-				if(tempString.contains("Market value:")  && tempString.contains("Mill.")) {
-					String convertedString = tempString.replaceAll("[^\\d,]", "");
-					double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*1000000;
-					country.setCountryValue(convertedDouble);
-				}
-				else if(tempString.contains("Market value:")  && tempString.contains("Th.")) {
-					String convertedString = "0,"+ tempString.replaceAll("[^\\d,]", "");
-					double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*100000;
-					country.setCountryValue(convertedDouble);
-
-				}
-
+			Elements statBox = doc.select("div[class=dataHeader dataExtended nationalmannschaft wm18]");
+			Elements marketValueBox = statBox.select("div[class=dataMarktwert]");
+			String tempString = (marketValueBox.text());
+//			for (Element countryStats: statBox.select("tr")) {
+//				String tempString = countryStats.text();
+			System.out.println(tempString);
+			if(tempString.contains("FIFA world ranking:")) {
+				String convertedString = tempString.replaceAll("[^\\d,]", "");
+				Integer fifaRanking = Integer.parseInt(convertedString);
+				country.setFifaRanking(fifaRanking);
+			}
+			if(tempString.contains("market value")  && tempString.contains("Bill.")) {
+				String convertedString = tempString.replaceAll("[^\\d,]", "");
+				double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*1000000000;
+				country.setCountryValue(convertedDouble/23);
+				System.out.println(country.getCountryValue());
+			}
+			else if(tempString.contains("market value")  && tempString.contains("Mill.")) {
+				String convertedString = tempString.replaceAll("[^\\d,]", "");
+				double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*1000000;
+				country.setCountryValue(convertedDouble/23);
+				System.out.println(country.getCountryValue());
+			}
+			else if(tempString.contains("market value")  && tempString.contains("Th.")) {
+				String convertedString = tempString.replaceAll("[^\\d,]", "");
+				double convertedDouble = Double.parseDouble(convertedString.replace(",","."))*1000;
+				country.setCountryValue(convertedDouble/23);					
+				System.out.println(country.getCountryValue());
 			}
 		}
 	}
@@ -81,10 +89,10 @@ public class CountryPlayerScraper {
 			String destinationFilePath = "Country Images/"+
 					country.getCountryName() + ".png";
 
-			if (WebsiteDetails.scrapeImage) {
-				saveImage(imageUrl, destinationFilePath);
-			}
-			country.setFlagPath(destinationFilePath);
+//			if (WebsiteDetails.scrapeImage) {
+//				saveImage(imageUrl, destinationFilePath);
+//			}
+//			country.setFlagPath(destinationFilePath);
 		}
 	}
 
@@ -155,6 +163,8 @@ public class CountryPlayerScraper {
 				//Set the age of the player
 				Elements ageContainer = playerRow.select("td[class=zentriert]");
 				String ageString = ageContainer.text();
+				ageString = ageString.replaceAll("[^a-zA-Z0-9]", "");
+				ageString = ageString.replaceAll("[^\\d.]", "");
 				player.setAge(ageString);
 
 				//Set the value of the player

@@ -5,9 +5,9 @@ public class WebsiteDetails {
 	public final static boolean scrapeImage = true;
 
 	//WK-2010
-	//	public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2010/teilnehmer/pokalwettbewerb/WM10/saison_id2009";
-	//	public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2010/spieltag/pokalwettbewerb/WM10/plus/0?spieltag=2";
-	//	public final static String addURL = "?saison_id=2009";
+//		public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2010/teilnehmer/pokalwettbewerb/WM10/saison_id2009";
+//		public final static String matchHtml = "https://www.transfermarkt.com/world-cup-2010/spieltag/pokalwettbewerb/WM10/plus/0?spieltag=2";
+//		public final static String addURL = "?saison_id=2009";
 
 	//WK-2014
 //		public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2014/teilnehmer/pokalwettbewerb/WM14/saison_id2013";
@@ -20,10 +20,10 @@ public class WebsiteDetails {
 	//public final static String addURL = "";
 
 	//EK 2016
-	//public final static String playerHtml = "https://www.transfermarkt.com/europameisterschaft-2016/startseite/pokalwettbewerb/EM16/saison_id2015";
-	//public final static String matchHtml = "https://www.transfermarkt.com/euro-2016/spieltag/pokalwettbewerb/EM16/plus/0?spieltag=";
-	//public final static String addURL = "?saison_id=2015";
-	//public final static String errorURLmatch = "https://www.transfermarkt.com/spielbericht/index/spielbericht/2702906";
+//	public final static String playerHtml = "https://www.transfermarkt.com/europameisterschaft-2016/teilnehmer/pokalwettbewerb/EM16/saison_id/2015";
+//	public final static String matchHtml = "https://www.transfermarkt.com/euro-2016/spieltag/pokalwettbewerb/EM16/plus/0?spieltag=";
+//	public final static String addURL = "?saison_id=2015";
+//	public final static String errorURLmatch = "https://www.transfermarkt.com/spielbericht/index/spielbericht/2702906";
 
 	//WK 2018
 	public final static String playerHtml = "https://www.transfermarkt.com/weltmeisterschaft-2018/startseite/pokalwettbewerb/WM18";
